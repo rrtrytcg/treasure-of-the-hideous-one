@@ -1753,6 +1753,8 @@ label rosentos_found_sleeping:
 
 label rosentos_destroyed_sleeping:
     $ play_scene_music("audio/mus_victory.ogg", fadein=1.0)
+    
+    hide char_rosentos_vamp with vpunch
     narrator "The body crumbles to ash in the grave earth. Just like that — a hundred years of evil, ended."
     $ rosentos_slain = True
 
@@ -2000,6 +2002,8 @@ label combat_rosentos_attack:
 label combat_rosentos_victory:
     $ play_scene_music("audio/mus_victory.ogg", fadein=1.0)
     
+    hide char_rosentos_vamp with vpunch
+    
     if rosentos_hits >= 5:
         narrator "Rosentos crumbles to ash before he can even scream. It is over that quickly."
     else:
@@ -2044,6 +2048,8 @@ label combat_rosentos_dawn_victory:
     
     narrator "The first grey light touches the sky."
     narrator "Rosentos stops. His expression changes — from fury to something like recognition."
+    
+    hide char_rosentos_vamp with dissolve
     narrator "He transforms to mist, fleeing toward his coffins."
     
     if rosentos_grave_earth_scattered:
