@@ -1782,6 +1782,7 @@ label combat_rosentos:
     $ rosentos_charm_saved = False
     $ rosentos_dawn_timer = 0
     $ rosentos_closecall = False
+    $ rosentos_intro_shown = False
     
     # Carry any pre-fight bonuses
     $ rosentos_bonus = combat_bonus_final
@@ -1795,9 +1796,10 @@ label combat_rosentos:
     jump combat_rosentos_round
 
 label combat_rosentos_round:
-    # --- SITUATION REPORT ---
-    if rosentos_round == 1:
+    # --- ROUND OPENING ---
+    if rosentos_round == 1 and not rosentos_intro_shown:
         narrator "Rosentos rises before you, fully revealed. Red eyes blaze in the darkness. Behind him, the suggestion of vast wings."
+        $ rosentos_intro_shown = True
     
     # --- DAWN TIMER ---
     if rosentos_grave_earth_scattered:
