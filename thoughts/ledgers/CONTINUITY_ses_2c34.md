@@ -32,24 +32,17 @@ Improve the Ren'Py visual novel "Treasure of the Hideous One" based on AC2 - fix
 - [x] **Git setup:** Created GitHub repo, committed and pushed all changes
 
 ### In Progress
-- [ ] None - just added vampire sprite hide effects, need to verify
+- [ ] Continue playtesting to find more inconsistencies
 
 ### Blocked
 - (none)
 
-## Key Decisions
-- **Lowered success threshold (15→13)**: Original was too punishing (~25% success rate)
-- **Partial deals damage**: Changed from stance-only penalty to actually progressing combat
-- **Grindy ghouls**: User requested survivable but tense attrition fight
-- **Scene persistence**: `combat_rosentos` no longer forces `bg_isle_path_night` so urns path keeps correct background
-- **`vpunch` for ash death**: Dramatic screen shake for instant kill scenarios
-- **`dissolve` for mist**: Softer transition for dawn victory where he transforms
-
 ## Next Steps
-1. Run smoke test to verify vampire sprite hide effects work
-2. Commit and push the vampire sprite hide fixes
-3. Continue playtesting to find more inconsistencies
-4. Consider playtesting Rosentos combat specifically
+1. ✅ Run smoke test to verify vampire sprite hide effects work
+2. ✅ Commit and push the vampire sprite hide fixes (commit 3d98643)
+3. ✅ Code review - no critical issues found
+4. Continue playtesting to find more inconsistencies
+5. Consider playtesting Rosentos combat specifically
 
 ## Critical Context
 - **Git status**: Pushed to https://github.com/rrtrytcg/treasure-of-the-hideous-one
