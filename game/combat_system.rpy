@@ -242,9 +242,9 @@ init python:
             outcome = "critical_success"
         elif raw == 1:
             outcome = "critical_blunder"
-        elif total >= 15:
+        elif total >= 13:
             outcome = "success"
-        elif total >= 8:
+        elif total >= 6:
             outcome = "partial"
         else:
             outcome = "failure"

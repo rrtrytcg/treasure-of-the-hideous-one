@@ -226,7 +226,7 @@ label combat_hydra:
     stop music fadeout 0.5
     play music "audio/mus_combat_mid.ogg" fadein 0.8
     
-    $ hydra_heads = 10
+    $ hydra_heads = 7
     $ hydra_round = 1
     $ hydra_hits = 0
     $ hydra_stance = "holding"
@@ -243,7 +243,7 @@ label combat_hydra:
 
 label combat_hydra_round:
     if hydra_round == 1:
-        narrator "The hydra surges from the shallows, all ten heads snapping at once!"
+        narrator "The hydra surges from the shallows, seven heads snapping at once!"
     
     $ renpy.show_screen('inventory_screen')
     
@@ -256,9 +256,9 @@ label combat_hydra_round:
         narrator "The water is at your heels. This is your last stand."
     
     # --- HYDRA STATE ---
-    if hydra_heads >= 8:
+    if hydra_heads >= 6:
         narrator "The hydra's heads weave and snap, a wall of teeth and fury."
-    elif hydra_heads >= 5:
+    elif hydra_heads >= 4:
         narrator "[hydra_heads] heads remain active. The beast is bleeding but still dangerous."
     elif hydra_heads >= 2:
         narrator "Only [hydra_heads] heads still fight. The beast is weakening."
@@ -366,6 +366,11 @@ label combat_hydra_attack:
         
     elif outcome == "partial":
         narrator "You trade blows. The hydra's teeth scrape your armor."
+        $ hydra_hits += 1
+        $ hydra_heads -= 1
+        if hydra_heads < 1:
+            $ hydra_heads = 0
+        narrator "[hydra_heads] heads remain."
         if hydra_stance == "holding":
             $ hydra_stance = "reeling"
         
@@ -375,18 +380,12 @@ label combat_hydra_attack:
             $ hydra_stance = "reeling"
         elif hydra_stance == "reeling":
             $ hydra_stance = "desperate"
-        
-        # Check for drag
-        if hydra_heads >= 6:
-            narrator "Six heads coil around your limbs. You are being dragged toward the water!"
-            if in_party("carmelita") or in_party("thut"):
-                narrator "Blades flash. Your companions cut you free."
-            else:
-                jump game_over_hydra_drown
+        # No more instant drag death - companions always help or player survives
         
     else:  # critical_blunder
         narrator "CRITICAL BLUNDER! You slip on the mud. Three heads strike at once."
         $ hydra_stance = "desperate"
+        # Companions always cut you free or you grab something
     
     # --- RESET CLOSECALL ON SUCCESS ---
     if outcome in ["critical_success", "success"]:
@@ -396,7 +395,7 @@ label combat_hydra_attack:
     if hydra_heads <= 0:
         jump combat_hydra_victory
     
-    if hydra_hits >= 3:
+    if hydra_hits >= 5:
         jump combat_hydra_victory
     
     if hydra_stance == "desperate" and outcome in ["failure", "critical_blunder"]:
@@ -428,8 +427,8 @@ label combat_hydra_victory:
 
 label hydra_loot:
     narrator "You find the hydra's lair — a hollow in the riverbank, half-filled with water."
-    narrator "A mud nest holds ten hydra eggs, leathery and warm. Scattered about: thousands of copper and silver coins."
-    $ add_item("Hydra Eggs (10)")
+    narrator "A mud nest holds seven hydra eggs, leathery and warm. Scattered about: thousands of copper and silver coins."
+    $ add_item("Hydra Eggs (7)")
     $ add_item("Lapis Lazuli Bracelet")
     narrator "And a solid lapis lazuli bracelet, worth a fortune to the right buyer."
     
@@ -444,14 +443,17 @@ label hydra_loot:
 label combat_hydra_flee:
     narrator "You dive into the river. The water is cold and fast."
     
-    $ raw, total, outcome = roll_d20(0)
+    $ raw, total, outcome = roll_d20(2)  # Bonus for choosing to flee smartly
     
-    if outcome in ["critical_success", "success"]:
+    if outcome in ["critical_success", "success", "partial"]:
         narrator "The hydra does not follow into deep water. You escape upstream, battered but alive."
         jump grisbaldos_grove
     else:
-        narrator "The current is too strong. You are pulled under."
-        jump game_over_hydra_drown
+        # Failure - you escape but take a wound
+        narrator "The current pulls you under. You surface downstream, bleeding but alive."
+        narrator "The hydra does not pursue. You've escaped... but you won't be reaching the grove this way."
+        # Player must choose another path - skip hydra loot
+        jump swamp_entrance_path
 
 label grisbaldos_grove:
     # Music: eerie quiet, oak grove, distant wind
@@ -994,9 +996,8 @@ label combat_ghouls:
     play music "audio/mus_combat_low.ogg" fadein 0.8
     
     $ ghoul_round = 1
-    $ ghoul_hits = 0
-    $ ghoul_stance = "holding"
-    $ ghoul_paralyzed = False
+    $ ghoul_wounds = 0  # Times player got hit (3 = overwhelmed)
+    $ ghoul_driven_back = 0  # Times player succeeded (3 = victory)
     $ ghoul_specials_used = []
     $ ghoul_closecall = False
     
@@ -1008,18 +1009,11 @@ label combat_ghouls_round:
     # --- SITUATION REPORT ---
     if ghoul_round == 1:
         narrator "They emerge from the water in silence — waterlogged, grey-white, bloated from years beneath the surface."
-    elif ghoul_round == 2:
-        narrator "More ghouls pull themselves onto the platform. You cannot hold them all."
-        if ghoul_stance == "holding":
-            narrator "The platform is slick with blood and black water."
-        elif ghoul_stance == "reeling":
-            narrator "You are losing ground. The edge of the platform is close."
-        else:
-            narrator "This is your last stand. The water is behind you."
     else:
-        narrator "The ghouls keep coming. But so does exhaustion."
-        if ghoul_stance == "desperate":
-            narrator "One more good hit and you break through. One more bad one and you fall."
+        narrator "The ghouls press forward. Cold hands reach for you."
+    
+    # Show wounds vs progress
+    narrator "You've driven back [ghoul_driven_back] wave(s). You've taken [ghoul_wounds] hit(s)."
     
     # --- PLAYER CHOICE ---
     menu:
@@ -1065,19 +1059,13 @@ label combat_ghouls_attack:
     $ total_bonus = bonus
     
     if ghoul_thut_insight:
-        $ total_bonus += 1
+        $ total_bonus += 2  # Better bonus for the insight
     
     if ghoul_fire:
         $ total_bonus += 1
     
     if in_party("carmelita"):
         $ total_bonus += get_companion_bonus("carmelita", "ghouls", "attack")
-    
-    # Stance penalty
-    if ghoul_stance == "reeling":
-        $ total_bonus -= 1
-    elif ghoul_stance == "desperate":
-        $ total_bonus -= 2
     
     # Slough debuff
     if slough_debuffed:
@@ -1088,70 +1076,71 @@ label combat_ghouls_attack:
     $ raw, total, outcome = roll_d20(total_bonus)
     narrator "You roll... [raw]!"
     
-    # --- RESOLVE ---
-    if outcome == "critical_success":
-        $ ghoul_hits += 2
-        narrator "CRITICAL! You cut down the lead ghouls before the others can coordinate."
-        narrator "They scatter back into the water."
+    # --- RESOLVE: 6+ = success (hurt them), <6 = failure (they hurt you) ---
+    if total >= 6:
+        # Player succeeds - drive back a wave
+        $ ghoul_driven_back += 1
+        $ ghoul_closecall = False  # Reset on success
         
-    elif outcome == "success":
-        $ ghoul_hits += 1
-        narrator "A hard fight. You hold the line. Ghouls fall into the black water."
+        if raw == 20:
+            narrator "CRITICAL! Your blade cleaves through two ghouls at once. They collapse back into the water."
+            $ ghoul_driven_back += 1  # Extra progress on crit
+        elif raw >= 15:
+            narrator "A solid strike! Ghouls tumble back into the black water, bodies twitching."
+        else:
+            narrator "You drive them back. The line wavers but holds."
         
-    elif outcome == "partial":
-        narrator "You trade blows. The ghouls keep coming."
-        if ghoul_stance == "holding":
-            $ ghoul_stance = "reeling"
-        narrator "Claws rake your arm. The wound goes cold."
+        # Check victory
+        if ghoul_driven_back >= 3:
+            narrator "The last ghouls scramble away into the water. The platform holds."
+            jump combat_ghouls_victory
+    else:
+        # Player fails - take a wound
+        $ ghoul_wounds += 1
         
-    elif outcome == "failure":
-        narrator "A ghoul's claws find purchase. Paralysis crawls through your limbs!"
-        if ghoul_stance == "holding":
-            $ ghoul_stance = "reeling"
-        elif ghoul_stance == "reeling":
-            $ ghoul_stance = "desperate"
-            $ ghoul_paralyzed = True
+        if raw == 1:
+            narrator "CRITICAL BLUNDER! You slip on the wet planks. Cold hands seize you!"
+            $ ghoul_wounds += 1  # Extra wound on blunder
         
-        if ghoul_paralyzed:
-            if in_party("carmelita") or in_party("thut"):
-                narrator "Your companions drag you back, shaking the paralysis from your limbs."
-                $ ghoul_paralyzed = False
-            else:
-                if ghoul_closecall:
-                    narrator "The paralysis spreads. You cannot move."
-                    jump game_over_ghouls
-                else:
-                    $ ghoul_closecall = True
-                    narrator "You fight off the paralysis through sheer will. But you feel it waiting."
-        
-        jump combat_ghouls_round
-    
-    else:  # critical_blunder
-        narrator "CRITICAL BLUNDER! You lose your footing on the wet planks."
-        narrator "Cold hands grip your ankles. You are being dragged toward the water."
-        $ ghoul_stance = "desperate"
+        narrator "A ghoul's claws rake across your arm. Cold spreads from the wound."
         
         if in_party("carmelita") or in_party("thut"):
-            narrator "Your companions haul you up by main force. Cold water drips from your boots."
-            $ ghoul_closecall = False
-        else:
+            narrator "Your companions pull you back from the edge."
+        elif ghoul_wounds >= 3:
+            # Overwhelmed - check closecall
             if ghoul_closecall:
-                narrator "The ghouls pull you under. The black water closes over your head."
-                jump game_over_ghouls
+                narrator "The cold spreads through your body. You cannot move your legs."
+                jump game_over_ghouls_paralyzed
             else:
                 $ ghoul_closecall = True
-                narrator "You claw your way back to the platform, barely. The cold waits for you."
+                narrator "You fight off the paralysis. But the cold waits in your veins, ready to finish what it started."
+        elif ghoul_wounds >= 2:
+            narrator "The cold settles deeper. Your movements are slowing."
+        else:
+            narrator "Pain flares, then numbness. You shake it off... for now."
         
-        jump combat_ghouls_round
+        # Check if still in fight
+        if ghoul_wounds >= 3 and not ghoul_closecall:
+            pass  # Already handled above
+        elif ghoul_wounds >= 3 and ghoul_closecall:
+            jump game_over_ghouls_paralyzed
+    
+    # --- NEXT ROUND ---
+    $ ghoul_round += 1
+    jump combat_ghouls_round
 
 label combat_ghouls_victory:
     $ play_scene_music("audio/mus_victory.ogg", fadein=1.0)
     
-    if ghoul_hits >= 3:
-        narrator "The last ghoul sinks back into the black water. The platform holds."
-        narrator "You have won cleanly."
+    narrator "The last ghoul sinks back into the black water. The platform holds."
+    
+    if ghoul_wounds == 0:
+        narrator "Clean victory. The cold never touched you."
+    elif ghoul_wounds == 1:
+        narrator "One wound. The cold lingers, but you can push through."
     else:
-        narrator "The ghouls scatter into the water. You are battered but standing."
+        narrator "Both of you are wounded. The cold has settled deep."
+        narrator "It will take time to shake it off. If you ever do."
     
     if slough_debuffed:
         narrator "You fought through it — the shadow of the Slough begins to recede."
@@ -1166,10 +1155,13 @@ label ghouls_aftermath:
     
     narrator "You stand among the ruins. The silence after combat is louder than the fighting."
     
-    if ghoul_hits >= 3:
+    if ghoul_wounds == 0:
         narrator "No one is seriously wounded. But the ghouls' touch leaves a cold that doesn't fade quickly."
-    else:
+    elif ghoul_wounds == 1:
         narrator "Someone is shaking. Someone else is checking wounds with steady hands."
+    else:
+        narrator "Both of you are bleeding. The wounds go cold almost immediately."
+        narrator "You bandage what you can, but the numbness spreads."
     
     if in_party("carmelita"):
         carmelita "That was too close. We need to keep moving."
@@ -1184,14 +1176,15 @@ label ghouls_aftermath:
 label combat_ghouls_flee:
     narrator "You scramble for the raft."
     
-    $ raw, total, outcome = roll_d20(0)
+    $ raw, total, outcome = roll_d20(1)  # Bonus for choosing escape
     
-    if outcome in ["critical_success", "success"]:
+    if total >= 6:
         narrator "You push off before the ghouls can reach the platform. They do not follow into deep water."
         jump ghouls_aftermath
     else:
         narrator "Ghouls are already on the raft. The platform is swarming."
-        $ ghoul_stance = "reeling"
+        $ ghoul_wounds += 1
+        narrator "You fight them off, but take a wound in the process."
         jump combat_ghouls_round
 
 label second_village_approach:
@@ -1503,17 +1496,18 @@ label rosentos_house:
 
     if in_party("thut"):
         narrator "Thut has not entered the cabin. He 'checks the perimeter' and does not return."
-        if in_party("thut"):
-            rosentos "Your friend prefers the outdoors. Wise. The air is fresher there."
-
+        rosentos "Your friend prefers the outdoors. Wise. The air is fresher there."
+    
     menu:
         "Accept the wine and keep him talking":
             narrator "You lift the cup to your lips. The smell is iron and old fruit. You drink — or seem to."
             rosentos "Good. Very good. My visitors always enjoy the vintage."
             narrator "He relaxes. The mask settles more comfortably."
-            rosentos "The last visitors — how long ago? Difficult to say. Time moves strangely on the island."
-            rosentos "They stayed for quite some time. They grew to love this place. They had nowhere else to go, in the end."
-            narrator "He is talking about the slave farm. He is telling you this to your face."
+            narrator "His tongue loosens with each question you ask. Casual admissions. Half-truths."
+            narrator "The last visitors — how long ago? Difficult to say. Time moves strangely here."
+            narrator "They stayed. They had nowhere else to go."
+            narrator "His smile does not reach his eyes. He is watching you watching him."
+            narrator "He knows you are not what you seem. But he is not ready to act yet."
             jump rosentos_house_investigation
         "Refuse the wine and press on the inconsistencies":
             $ rosentos_charmed = False
@@ -1524,11 +1518,32 @@ label rosentos_house:
             jump rosentos_house_investigation
         "Ask to see the sleeping arrangements — claim fatigue":
             rosentos "Of course. I have just the place."
-            narrator "He leads you toward the back of the cabin. A panel behind the shelves."
-            narrator "Beyond it, a trail leading down into a hollow you did not see from the beach."
-            if in_party("thut"):
-                narrator "Thut's voice, barely audible from the trees: 'That path leads to the farm. I've seen it from the reeds.'"
-            jump slave_farm_early
+            narrator "He gestures toward a door at the back of the cabin."
+            narrator "Then pauses. His smile tightens almost imperceptibly."
+            rosentos "But first — a drink. To seal our friendship."
+            narrator "He pours two glasses. His hand is steady. His eyes are not."
+            narrator "He is deciding something. You can see it in the way he measures you."
+            
+            menu:
+                "Accept the drink":
+                    narrator "You take the glass. His relief is visible — too visible."
+                    narrator "The wine is rich. Warm. It spreads through your chest."
+                    narrator "Your vision blurs at the edges. The room tilts."
+                    narrator "The last thing you see is his smile — finally unguarded, finally hungry."
+                    jump game_over_rosentos_charmed
+                "Refuse politely — you've had enough wine":
+                    rosentos "Of course. Forgive me. I forget that travellers are cautious."
+                    narrator "He drinks both glasses himself. His composure returns."
+                    narrator "But something has shifted. He knows you refused. He suspects you suspect."
+                    rosentos "The night is young. Perhaps a walk instead? The island is beautiful by moonlight."
+                    narrator "He reaches for the door. His hand brushes yours."
+                    narrator "Ice cold. And then — nothing. He withdraws."
+                    narrator "Perhaps not tonight. He seems to decide."
+                    rosentos "Rest well, traveller. I will show you the island in the morning."
+                    narrator "He withdraws to a back room. The door closes with a soft click."
+                    narrator "Through the window, you watch him transform — mist flowing toward the far side of the island."
+                    narrator "Toward the hollow."
+                    jump slave_farm
         "Confront him directly — demand the truth":
             $ rosentos_charmed = False
             narrator "The facade drops."
@@ -1772,8 +1787,7 @@ label combat_rosentos:
     $ rosentos_bonus = combat_bonus_final
     $ combat_bonus_final = 0
     
-    # ASSET: Rosentos fully revealed — red eyes blazing, fangs bared, one hand raised. Behind him in the night air, a massive bat-shadow rises. The island path, torchlight, deep darkness.
-    scene bg_isle_path_night with fade
+    # Keep the current scene - don't override (urns vs path handled by calling label)
     show char_rosentos_vamp battle with dissolve
     
     rosentos_vamp "You come here to destroy me? A hundred years I have waited. You are not the first to try."
