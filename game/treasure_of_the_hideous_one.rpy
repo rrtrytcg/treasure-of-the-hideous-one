@@ -1856,9 +1856,10 @@ label combat_rosentos_round:
             narrator "You retreat toward the eastern treeline, buying time."
             jump combat_rosentos_attack
         
-        "Have Carmelita warn about his gaze" if in_party("carmelita") and "carmelita_gaze" not in rosentos_specials_used:
+        "Have Carmelita shield you from his gaze" if in_party("carmelita") and "carmelita_gaze" not in rosentos_specials_used:
             $ rosentos_specials_used.append("carmelita_gaze")
-            narrator "Carmelita keeps her eyes down but calls out his movements."
+            narrator "Carmelita steps close, her shoulder brushing yours. She keeps her body between you and Rosentos."
+            narrator "She does not look at him. She watches his shadow instead."
             $ rosentos_charm_saved = True
             jump combat_rosentos_round
         
