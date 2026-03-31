@@ -9,7 +9,7 @@ define narrator          = Character(None, what_color="#d4cfc8")
 define fondalus          = Character("Fondalus the Soldier",      color="#c8a84b")
 define grisbaldos_ghost  = Character("Ghost of Grisbaldos",       color="#a0e8a0", what_italic=True)
 define possessed         = Character("??? (Possessed Companion)",  color="#a0e8a0", what_italic=True)
-define bandit_chief      = Character("Elven Bandit Chieftain",    color="#8b0000")
+define     bandit_chief      = Character("Elven Bandit Chieftain",    color="#8b0000")
 define korat             = Character("Chief Korat",                color="#cd853f")
 define carmelita         = Character("Carmelita",                  color="#dda0dd")
 define thut              = Character("Thut",                       color="#8fbc8f")
@@ -414,7 +414,10 @@ label combat_hydra_attack:
     jump combat_hydra_round
 
 label combat_hydra_victory:
+    stop music fadeout 0.5
+    pause 0.5
     $ play_scene_music("audio/mus_victory.ogg", fadein=1.0)
+    with vpunch
     
     hide char_hydra with dissolve
     
@@ -479,10 +482,7 @@ label grisbaldos_grove:
             jump bandits_plain
 
 label grisbaldos_ghost_encounter:
-    # Music: dramatic stinger then haunted ambient
-    play music "audio/mus_stinger_ghost.ogg"
-    pause 2.0
-    $ play_scene_music("audio/mus_explore_haunted.ogg", fadein=1.0)
+    # Music: haunted ambient continues — the eerie stillness is enough
 
     # ASSET: The oak grove at night, moonlight barely penetrating the canopy. Pale green light drifts between the trees in darting balls. A shaft of cold light rises from the earth of the cairn. The ghost is beginning to form — transparent figure in tattered military uniform, head lolling to one side.
     scene bg_grisbaldos_grove_night with fade
@@ -511,8 +511,11 @@ label grisbaldos_ghost_encounter:
             jump grove_departure
 
 label grisbaldos_possessed:
-    # ASSET: Close-up of a party member — eyes blank and glazed, pale green light visible in the pupils. They are speaking but their voice is not entirely their own. The dark grove is behind them.
+    # ASSET: Possessed companion — generic adventurer figure, rigid unnatural posture, eyes glowing with pale green light, faint green aura surrounding the body. The ghost's will speaks through them. Full-body sprite, transparent background, ~600px tall.
+    # Prompt: Generic adventurer figure in simple travel-worn gear, standing rigid with unnatural posture. Eyes glow with pale green spectral light. Faint green aura surrounding the body, suggesting ghostly possession. Transparent background, centered composition, ~600px tall.
+    # Mood: uncanny, wrong, the familiar made alien
     scene bg_grisbaldos_grove_night with fade
+    show char_possessed_companion with dissolve
 
     narrator "A companion goes rigid. Their eyes fill with pale green light. When they speak, the voice is not entirely their own."
 
@@ -550,6 +553,7 @@ label grisbaldos_possessed:
             jump grisbaldos_oath
 
 label grisbaldos_oath:
+    hide char_possessed_companion with dissolve
     narrator "The light leaves your companion's eyes. They are themselves again, pale and drained."
 
     # ASSET: Ghost of Grisbaldos reformed — same figure, but now pointing directly at the viewer. Expression no longer vacant — cold, demanding, implacable. The grove visible behind him, the cairn earth disturbed.
@@ -591,11 +595,11 @@ label grove_departure:
     
     if grisbaldos_oath_taken:
         narrator "The oath sits in your chest like a weight. Not heavy. But present."
-        narrator "Somewhere upstream, a vampire waits. You have work to do."
+        narrator "Somewhere upstream, a monster waits. You have work to do."
     elif grisbaldos_cursed:
         narrator "You feel watched. You always will, now."
     
-    narrator "You break camp and head downstream. The grass rises on either side of the river."
+    narrator "You break camp and head upstream. The grass rises on either side of the river."
     
     jump bandits_plain
 
@@ -603,11 +607,20 @@ label bandits_plain:
     # Music: open plain, deceptive calm before the ambush
     $ play_scene_music("audio/mus_explore_river.ogg", fadein=1.5)
 
-    # ASSET: Five-foot-tall yellowing grass rising above a steep riverbank, dustclouds in the air. A light breeze bends the grass. Something massive and armoured is rising from the grass — a figure in black polished armour with metal studs, holding a glittering black blade. A pale-eyed black horse stands beside it.
+    # ASSET: Three-foot-tall yellowing grass rising above a steep riverbank, dustclouds in the air. A light breeze bends the grass. NO bandit or horse — just the landscape.
+    # Prompt: Three-foot-tall yellowing grass along a dusty river path, steep riverbank, golden afternoon light, dustclouds in warm air, grass bending in a light breeze. No figures visible.
+    # Mood: deceptive calm, something lurking
+    # Lighting: warm golden afternoon, dust-hazed
     scene bg_bandits_plain with fade
 
-    narrator "The grass rises five feet on either side of the river path, yellowing under the heat. Dustclouds clog the air."
+    narrator "The grass rises three feet on either side of the river path, yellowing under the heat. Dustclouds clog the air."
     narrator "Then, across the breeze, you hear it: the creak of leather. A whinny."
+
+    # ASSET: Bandit chieftain sprite — demonic humanoid in black polished armour with metal studs, menacing leer, holding a glittering black blade. Standing beside a lean black horse with pale glowing eyes, smoke rising around its hooves from the tall grass. ~600px tall, transparent background. Centered composition.
+    # Prompt: Demonic humanoid in black polished plate armour with metal studs, menacing expression, holding a glittering black sword. Standing beside a lean black warhorse with faintly glowing pale eyes, smoke curling around hooves in tall grass. Centered composition, full-body character sprite on transparent background.
+    # Mood: threatening, sudden reveal
+    show char_bandit_chief with dissolve
+
     narrator "A demonic-looking humanoid rises from the long grass. Black polished armour, metal studs, a menacing leer held tight on its face. A glittering black blade."
     narrator "Beside it stands a lean black horse. Pale fire glows in the horse's eyes. Smoke rises from the long grass around its feet."
 
@@ -814,7 +827,11 @@ label combat_bandit_attack:
     jump combat_bandit_round
 
 label combat_bandit_victory:
+    stop music fadeout 0.5
+    pause 0.5
     $ play_scene_music("audio/mus_victory.ogg", fadein=1.0)
+    with vpunch
+    hide char_bandit_chief with dissolve
     
     if bandit_hits >= 3:
         narrator "The chieftain falls. Without his command, the thirty-five bandits scatter into the grass."
@@ -1130,7 +1147,10 @@ label combat_ghouls_attack:
     jump combat_ghouls_round
 
 label combat_ghouls_victory:
+    stop music fadeout 0.5
+    pause 0.5
     $ play_scene_music("audio/mus_victory.ogg", fadein=1.0)
+    with hpunch
     
     narrator "The last ghoul sinks back into the black water. The platform holds."
     
@@ -1233,7 +1253,7 @@ label second_village_korat:
             $ korat_suspicious = True
             narrator "Korat's servile expression flickers. Something else moves beneath it."
             korat "Ah. I... see. Then you are guests."
-            narrator "He smiles too widely. He is already thinking."
+            narrator "He smiles too widely. Something in his eyes."
             jump second_village_talk
 
 label second_village_talk:

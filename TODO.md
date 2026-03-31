@@ -16,6 +16,11 @@
 - [x] Add: oath fulfilled + treasure taken = different epilogue
 - [x] Add: mercy-killed thralls = different epilogue
 
+## Art & Assets (ComfyUI pipeline ready)
+- [ ] Generate `bg_bandits_plain.png` — plain grass landscape, no figures
+- [ ] Generate `char_bandit_chief.png` — demonic humanoid + black warhorse, centered
+- [ ] Generate remaining sprites/backgrounds per ASSET comments (see all `# ASSET:` comments in `treasure_of_the_hideous_one.rpy`)
+
 ## Polish
 - [ ] Smoke test all paths (`python tools\smoke_playthrough.py`)
 - [ ] Check all menu choices lead somewhere valid
