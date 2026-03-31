@@ -411,7 +411,6 @@ transform title_entrance:
     linear 1.5 yoffset 0
     ease 0.8 yoffset 5
     ease 0.8 yoffset 0
-    repeat
 
 transform version_entrance:
     alpha 0.0
