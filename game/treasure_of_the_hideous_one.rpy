@@ -1555,10 +1555,10 @@ label rosentos_house_investigation:
     narrator "Rosentos retires late in the night. You hear a door — then silence. He is gone."
 
     menu:
-        "Search the cabin for the secret door he used":
-            narrator "You find it behind a shelf — a panel leading out the back of the cabin."
-            narrator "You follow the trail in the dark."
-            jump slave_farm
+    "Search the cabin for the secret door he used":
+    narrator "You find it behind a shelf — a panel leading out the back of the cabin."
+    narrator "You follow the trail in the dark."
+    jump slave_farm_early
         "Go directly to the stone urns on the path — that is where he sleeps":
             if in_party("thut"):
                 thut "Good. Move now while he is feeding. We have maybe an hour."
