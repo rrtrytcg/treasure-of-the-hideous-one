@@ -377,22 +377,29 @@ screen main_menu():
             xalign 0.5
             yalign 0.85
             spacing 20
+            xfill True
+            xminimum 350
 
             textbutton _("Start Game") action Start():
                 style "main_menu_button"
                 text_style "main_menu_button_text"
+                xminimum 350
             textbutton _("Load Game") action ShowMenu("load"):
                 style "main_menu_button"
                 text_style "main_menu_button_text"
+                xminimum 350
             textbutton _("Preferences") action ShowMenu("preferences"):
                 style "main_menu_button"
                 text_style "main_menu_button_text"
+                xminimum 350
             textbutton _("About") action ShowMenu("about"):
                 style "main_menu_button"
                 text_style "main_menu_button_text"
+                xminimum 350
             textbutton _("Quit") action Quit(confirm=True):
                 style "main_menu_button"
                 text_style "main_menu_button_text"
+                xminimum 350
 
 
 ## Title Animations ############################################################
@@ -420,6 +427,7 @@ style main_menu_vbox is vbox
 style main_menu_text is gui_text
 style main_menu_title is main_menu_text
 style main_menu_version is main_menu_text
+style main_menu_button_frame is frame
 
 style main_menu_frame:
     xsize 420
@@ -440,19 +448,23 @@ style main_menu_title:
     size 80
     color "#d4a056"
     xalign 0.5
-    text_outlines [ (4, "#0d0500", 0, 0), (2, "#6b3410", 0, 0), (1, "#d4a056", 0, 0) ]
-    text_drop_shadow = True
-    text_drop_shadow_xoffset = 3
-    text_drop_shadow_yoffset = 3
-    text_drop_shadow_blur = 6
-    text_drop_shadow_color = "#000000cc"
+    outlines [ (4, "#0d0500", 0, 0), (2, "#6b3410", 0, 0), (1, "#d4a056", 0, 0) ]
+    drop_shadow (3, 3)
+    drop_shadow_blur 6
+    drop_shadow_color "#000000cc"
 
 style main_menu_version:
     font "fonts/Cinzel.ttf"
     size 24
     color "#8b7355"
     xalign 0.5
-    text_outlines [ (1, "#0d0500", 0, 0) ]
+    outlines [ (1, "#0d0500", 0, 0) ]
+
+style main_menu_button_frame:
+    xalign 0.5
+    yalign 0.85
+    background None
+    padding (0, 0, 0, 0)
 
 
 ## Main Menu Button Styles #####################################################
@@ -461,15 +473,14 @@ style main_menu_button is gui_button
 style main_menu_button_text is gui_button_text
 
 style main_menu_button:
-    xminimum 280
-    xmaximum 400
+    xminimum 350
+    xmaximum 350
+    yminimum 50
     
     background Frame(Solid("#0d0500bb"), 10, 10, 10, 10)
     hover_background Frame(Solid("#6b3410dd"), 10, 10, 10, 10)
     
     activate_sound None
-    
-    xalign 0.5
 
 style main_menu_button_text:
     font "fonts/Cinzel.ttf"
@@ -479,12 +490,10 @@ style main_menu_button_text:
     selected_color "#ffd700"
     insensitive_color "#8888887f"
     
-    text_outlines [ (1, "#0d0500", 0, 0) ]
-    text_drop_shadow = True
-    text_drop_shadow_xoffset = 1
-    text_drop_shadow_yoffset = 1
-    text_drop_shadow_blur = 2
-    text_drop_shadow_color = "#000000aa"
+    outlines [ (1, "#0d0500", 0, 0) ]
+    drop_shadow (1, 1)
+    drop_shadow_blur 2
+    drop_shadow_color "#000000aa"
     
     xalign 0.5
 
