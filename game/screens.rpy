@@ -361,21 +361,53 @@ screen main_menu():
     frame:
         style "main_menu_frame"
 
-    ## The use statement includes another screen inside this one. The actual
-    ## contents of the main menu are in the navigation screen.
-    use navigation
-
+    ## Title and version
     if gui.show_name:
-
         vbox:
             style "main_menu_vbox"
 
             text "[config.name!t]":
                 style "main_menu_title"
+                at title_entrance
 
             text "[config.version]":
                 style "main_menu_version"
+                at version_entrance
 
+    ## Main menu buttons with styled appearance
+    vbox:
+        style_prefix "main_menu_button"
+        
+        xalign 0.5
+        yalign 0.75
+        spacing 15
+
+        textbutton _("Start Game") action Start()
+        textbutton _("Load Game") action ShowMenu("load")
+        textbutton _("Preferences") action ShowMenu("preferences")
+        textbutton _("About") action ShowMenu("about")
+        textbutton _("Quit") action Quit(confirm=True)
+
+
+## Title Animations ############################################################
+
+transform title_entrance:
+    alpha 0.0
+    yoffset -30
+    linear 1.5 alpha 1.0
+    linear 1.5 yoffset 0
+    ease 0.8 yoffset 5
+    ease 0.8 yoffset 0
+    repeat
+
+transform version_entrance:
+    alpha 0.0
+    linear 1.0 alpha 0.7
+    pause 2.0
+    linear 1.0 alpha 1.0
+
+
+## Main Menu Styles ############################################################
 
 style main_menu_frame is empty
 style main_menu_vbox is vbox
@@ -386,7 +418,6 @@ style main_menu_version is main_menu_text
 style main_menu_frame:
     xsize 420
     yfill True
-
     background "gui/overlay/main_menu.png"
 
 style main_menu_vbox:
@@ -401,9 +432,54 @@ style main_menu_text:
 
 style main_menu_title:
     properties gui.text_properties("title")
+    text_outlines [ (3, "#1a0a00", 1, 1), (2, "#8b4513", 0, 0), (1, "#d4a056", -1, -1) ]
+    text_shadow_color = "#00000080"
+    text_drop_shadow = True
+    text_drop_shadow_xoffset = 4
+    text_drop_shadow_yoffset = 4
+    text_drop_shadow_blur = 8
+    text_drop_shadow_color = "#000000cc"
 
 style main_menu_version:
     properties gui.text_properties("version")
+    text_outlines [ (2, "#1a0a00", 1, 1), (1, "#8b4513", 0, 0) ]
+    text_shadow_color = "#00000080"
+
+
+## Main Menu Button Styles #####################################################
+
+style main_menu_button is gui_button
+style main_menu_button_text is gui_button_text
+
+style main_menu_button:
+    xminimum 300
+    xpadding 40
+    ypadding 14
+    
+    background Frame(Solid("#1a0a0099"), 8, 8, 8, 8)
+    hover_background Frame(Solid("#8b4513cc"), 8, 8, 8, 8)
+    
+    activate_sound None
+    
+    xalign 0.5
+
+style main_menu_button_text:
+    font "fonts/Cinzel.ttf"
+    size 28
+    color "#d4a056"
+    hover_color "#ffd700"
+    selected_color "#ffd700"
+    insensitive_color "#8888887f"
+    
+    text_outlines [ (2, "#1a0a00", 1, 1), (1, "#8b4513", 0, 0) ]
+    text_shadow_color = "#00000080"
+    text_drop_shadow = True
+    text_drop_shadow_xoffset = 2
+    text_drop_shadow_yoffset = 2
+    text_drop_shadow_blur = 4
+    text_drop_shadow_color = "#000000aa"
+    
+    xalign 0.5
 
 
 ## Game Menu screen ############################################################
