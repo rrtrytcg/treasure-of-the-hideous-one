@@ -357,10 +357,6 @@ screen main_menu():
 
     add gui.main_menu_background
 
-    ## This empty frame darkens the main menu.
-    frame:
-        style "main_menu_frame"
-
     ## Title and version
     if gui.show_name:
         vbox:
@@ -378,17 +374,25 @@ screen main_menu():
     fixed:
         
         vbox:
-            style_prefix "main_menu_button"
-            
             xalign 0.5
             yalign 0.85
             spacing 20
 
-            textbutton _("Start Game") action Start()
-            textbutton _("Load Game") action ShowMenu("load")
-            textbutton _("Preferences") action ShowMenu("preferences")
-            textbutton _("About") action ShowMenu("about")
-            textbutton _("Quit") action Quit(confirm=True)
+            textbutton _("Start Game") action Start():
+                style "main_menu_button"
+                text_style "main_menu_button_text"
+            textbutton _("Load Game") action ShowMenu("load"):
+                style "main_menu_button"
+                text_style "main_menu_button_text"
+            textbutton _("Preferences") action ShowMenu("preferences"):
+                style "main_menu_button"
+                text_style "main_menu_button_text"
+            textbutton _("About") action ShowMenu("about"):
+                style "main_menu_button"
+                text_style "main_menu_button_text"
+            textbutton _("Quit") action Quit(confirm=True):
+                style "main_menu_button"
+                text_style "main_menu_button_text"
 
 
 ## Title Animations ############################################################
