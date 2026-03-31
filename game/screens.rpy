@@ -450,7 +450,7 @@ style main_menu_title:
     xalign 0.5
     outlines [ (4, "#0d0500", 0, 0), (2, "#6b3410", 0, 0), (1, "#d4a056", 0, 0) ]
     drop_shadow (3, 3)
-    drop_shadow_blur 6
+    drop_shadow_radius 6
     drop_shadow_color "#000000cc"
 
 style main_menu_version:
@@ -492,7 +492,7 @@ style main_menu_button_text:
     
     outlines [ (1, "#0d0500", 0, 0) ]
     drop_shadow (1, 1)
-    drop_shadow_blur 2
+    drop_shadow_radius 2
     drop_shadow_color "#000000aa"
     
     xalign 0.5
