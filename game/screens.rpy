@@ -342,6 +342,13 @@ style navigation_button:
 
 style navigation_button_text:
     properties gui.text_properties("navigation_button")
+    font "fonts/Cinzel.ttf"
+    color "#c4956a"
+    hover_color "#ffd700"
+    selected_color "#ffd700"
+    outlines [ (1, "#0d0500", 0, 0) ]
+    drop_shadow (1, 1)
+    drop_shadow_color "#000000aa"
 
 
 ## Main Menu screen ############################################################
@@ -618,13 +625,25 @@ style game_menu_label:
 
 style game_menu_label_text:
     size 75
-    color gui.accent_color
+    color "#d4a056"
     yalign 0.5
+    font "fonts/Cinzel.ttf"
+    outlines [ (3, "#0d0500", 0, 0), (1, "#6b3410", 0, 0) ]
+    drop_shadow (2, 2)
+    drop_shadow_color "#000000cc"
 
 style return_button:
     xpos gui.navigation_xpos
     yalign 1.0
     yoffset -45
+
+style return_button_text:
+    font "fonts/Cinzel.ttf"
+    color "#c4956a"
+    hover_color "#ffd700"
+    outlines [ (1, "#0d0500", 0, 0) ]
+    drop_shadow (1, 1)
+    drop_shadow_color "#000000aa"
 
 
 ## About screen ################################################################
