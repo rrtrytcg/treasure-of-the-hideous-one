@@ -379,8 +379,8 @@ screen main_menu():
         style_prefix "main_menu_button"
         
         xalign 0.5
-        yalign 0.75
-        spacing 15
+        yalign 0.85
+        spacing 20
 
         textbutton _("Start Game") action Start()
         textbutton _("Load Game") action ShowMenu("load")
@@ -421,29 +421,32 @@ style main_menu_frame:
     background "gui/overlay/main_menu.png"
 
 style main_menu_vbox:
-    xalign 1.0
-    xoffset -30
-    xmaximum 1200
-    yalign 1.0
-    yoffset -30
+    xalign 0.5
+    yalign 0.0
+    yoffset 60
+    spacing 10
 
 style main_menu_text:
     properties gui.text_properties("main_menu", accent=True)
 
 style main_menu_title:
-    properties gui.text_properties("title")
-    text_outlines [ (3, "#1a0a00", 1, 1), (2, "#8b4513", 0, 0), (1, "#d4a056", -1, -1) ]
-    text_shadow_color = "#00000080"
+    font "fonts/Cinzel.ttf"
+    size 80
+    color "#d4a056"
+    xalign 0.5
+    text_outlines [ (4, "#0d0500", 0, 0), (2, "#6b3410", 0, 0), (1, "#d4a056", 0, 0) ]
     text_drop_shadow = True
-    text_drop_shadow_xoffset = 4
-    text_drop_shadow_yoffset = 4
-    text_drop_shadow_blur = 8
+    text_drop_shadow_xoffset = 3
+    text_drop_shadow_yoffset = 3
+    text_drop_shadow_blur = 6
     text_drop_shadow_color = "#000000cc"
 
 style main_menu_version:
-    properties gui.text_properties("version")
-    text_outlines [ (2, "#1a0a00", 1, 1), (1, "#8b4513", 0, 0) ]
-    text_shadow_color = "#00000080"
+    font "fonts/Cinzel.ttf"
+    size 24
+    color "#8b7355"
+    xalign 0.5
+    text_outlines [ (1, "#0d0500", 0, 0) ]
 
 
 ## Main Menu Button Styles #####################################################
@@ -452,12 +455,12 @@ style main_menu_button is gui_button
 style main_menu_button_text is gui_button_text
 
 style main_menu_button:
-    xminimum 300
-    xpadding 40
-    ypadding 14
+    xminimum 320
+    xpadding 50
+    ypadding 16
     
-    background Frame(Solid("#1a0a0099"), 8, 8, 8, 8)
-    hover_background Frame(Solid("#8b4513cc"), 8, 8, 8, 8)
+    background Frame(Solid("#0d0500bb"), 8, 8, 8, 8)
+    hover_background Frame(Solid("#6b3410dd"), 8, 8, 8, 8)
     
     activate_sound None
     
@@ -465,18 +468,17 @@ style main_menu_button:
 
 style main_menu_button_text:
     font "fonts/Cinzel.ttf"
-    size 28
-    color "#d4a056"
+    size 26
+    color "#c4956a"
     hover_color "#ffd700"
     selected_color "#ffd700"
     insensitive_color "#8888887f"
     
-    text_outlines [ (2, "#1a0a00", 1, 1), (1, "#8b4513", 0, 0) ]
-    text_shadow_color = "#00000080"
+    text_outlines [ (1, "#0d0500", 0, 0) ]
     text_drop_shadow = True
-    text_drop_shadow_xoffset = 2
-    text_drop_shadow_yoffset = 2
-    text_drop_shadow_blur = 4
+    text_drop_shadow_xoffset = 1
+    text_drop_shadow_yoffset = 1
+    text_drop_shadow_blur = 2
     text_drop_shadow_color = "#000000aa"
     
     xalign 0.5
