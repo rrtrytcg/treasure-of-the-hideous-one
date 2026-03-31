@@ -375,18 +375,20 @@ screen main_menu():
                 at version_entrance
 
     ## Main menu buttons with styled appearance
-    vbox:
-        style_prefix "main_menu_button"
+    fixed:
         
-        xalign 0.5
-        yalign 0.85
-        spacing 20
+        vbox:
+            style_prefix "main_menu_button"
+            
+            xalign 0.5
+            yalign 0.85
+            spacing 20
 
-        textbutton _("Start Game") action Start()
-        textbutton _("Load Game") action ShowMenu("load")
-        textbutton _("Preferences") action ShowMenu("preferences")
-        textbutton _("About") action ShowMenu("about")
-        textbutton _("Quit") action Quit(confirm=True)
+            textbutton _("Start Game") action Start()
+            textbutton _("Load Game") action ShowMenu("load")
+            textbutton _("Preferences") action ShowMenu("preferences")
+            textbutton _("About") action ShowMenu("about")
+            textbutton _("Quit") action Quit(confirm=True)
 
 
 ## Title Animations ############################################################
