@@ -1265,7 +1265,7 @@ label second_village_talk:
     menu:
         "Seek out Carmelita — the young woman who speaks Common":
             jump meet_carmelita
-        "Seek out Thut — the sullen tracker":
+        "Seek out the sullen tracker whose eyes never left your party even for an instant":
             jump meet_thut
         "Move through the village openly":
             narrator "The natives shrink from you, eyeing you with reverence or terror — you cannot tell which."
