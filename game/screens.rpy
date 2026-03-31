@@ -669,6 +669,12 @@ screen about():
             label "[config.name!t]"
             text _("Version [config.version!t]\n")
 
+            ## Attribution
+            text _("A Ren'Py visual novel adaptation of:")
+            text _("\"The Treasure of the Hideous One\"")
+            text _("by David Cook")
+            text _("AC2 — D&D Expert Mini-Adventure for Character Levels 4–7\n")
+
             ## gui.about is usually set in options.rpy.
             if gui.about:
                 text "[gui.about!t]\n"
@@ -679,9 +685,20 @@ screen about():
 style about_label is gui_label
 style about_label_text is gui_label_text
 style about_text is gui_text
+style about_accent_text is about_text
 
 style about_label_text:
     size gui.label_text_size
+
+style about_text:
+    size 24
+    color "#c4956a"
+    outlines [ (1, "#0d0500", 0, 0) ]
+
+style about_accent_text:
+    size 26
+    color "#d4a056"
+    outlines [ (1, "#0d0500", 0, 0), (1, "#6b3410", 0, 0) ]
 
 
 ## Load and Save screens #######################################################
