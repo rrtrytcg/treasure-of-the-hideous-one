@@ -455,12 +455,11 @@ style main_menu_button is gui_button
 style main_menu_button_text is gui_button_text
 
 style main_menu_button:
-    xminimum 320
-    xpadding 50
-    ypadding 16
+    xminimum 280
+    xmaximum 400
     
-    background Frame(Solid("#0d0500bb"), 8, 8, 8, 8)
-    hover_background Frame(Solid("#6b3410dd"), 8, 8, 8, 8)
+    background Frame(Solid("#0d0500bb"), 10, 10, 10, 10)
+    hover_background Frame(Solid("#6b3410dd"), 10, 10, 10, 10)
     
     activate_sound None
     
@@ -469,7 +468,7 @@ style main_menu_button:
 style main_menu_button_text:
     font "fonts/Cinzel.ttf"
     size 26
-    color "#c4956a"
+    color "#e8c48a"
     hover_color "#ffd700"
     selected_color "#ffd700"
     insensitive_color "#8888887f"
