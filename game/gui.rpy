@@ -40,6 +40,9 @@ define gui.hover_color = '#ffd700'
 ## The color used for a text button when it cannot be selected.
 define gui.insensitive_color = '#8888887f'
 
+## The color used for a text button when it is selected but not focused.
+define gui.selected_color = '#ffd700'
+
 ## Colors used for the portions of bars that are not filled in. These are not
 ## used directly, but are used when re-generating bar image files.
 define gui.muted_color = '#1a0a00'
@@ -162,7 +165,7 @@ define gui.button_text_size = gui.interface_text_size
 ## The color of button text in various states.
 define gui.button_text_idle_color = gui.idle_color
 define gui.button_text_hover_color = gui.hover_color
-define gui.button_text_selected_color = gui.selected_color
+define gui.button_text_selected_color = '#ffd700'
 define gui.button_text_insensitive_color = gui.insensitive_color
 
 ## The horizontal alignment of the button text. (0.0 is left, 0.5 is center, 1.0
