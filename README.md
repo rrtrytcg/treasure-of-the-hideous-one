@@ -46,4 +46,4 @@ python tools\smoke_playthrough.py
 
 ## License
 
-This repository is released under the MIT License. See `LICENSE`.
+This repository is released under the CC BY-NC-SA 4.0 License. See `LICENSE`.
