@@ -28,6 +28,7 @@ label game_over_hydra_drown:
 
 # --- BANDIT DEFEAT ---
 label game_over_bandits:
+    hide char_bandit_chief with dissolve
     $ renpy.hide_screen('inventory_screen')
     stop music fadeout 1.0
     
@@ -39,6 +40,7 @@ label game_over_bandits:
     jump game_over_screen
 
 label game_over_bandits_robbed:
+    hide char_bandit_chief with dissolve
     $ renpy.hide_screen('inventory_screen')
     stop music fadeout 1.0
     

@@ -987,7 +987,7 @@ label burned_village:
             narrator "A piece of carved bone. Writing on it, faint but legible."
             $ add_item("Carved Bone Map Fragment")
             $ bone_map_found = True
-            narrator "You make out: 'Truly the days of Kelshet and his evil hordes are numbered!' — but which village Kelshet led, the bone does not say."
+            narrator "You make out: 'Truly the days of the evil hordes are numbered!' — but the bone does not say which war, or which people, it refers to."
             jump burned_village_ghouls
         "This place stinks of death — back onto the raft immediately":
             narrator "Your instincts scream. You push off the stilts and retreat to the raft — just in time."
@@ -2285,7 +2285,7 @@ label ending_victory:
         carmelita "A hundred years. Can you imagine? A hundred years this place held in fear."
 
     if in_party("thut"):
-        thut "Korat's village is free. The people on the slave farm will wake confused — but free. That matters more than any treasure."
+        thut "Korat's village is free. The people on the slave farm will wake changed — some confused, some still smiling, but no longer bound to him. That matters more than any treasure."
 
     if grisbaldos_oath_taken:
         narrator "Somewhere, you feel certain, an old soldier's ghost has finally found rest."
@@ -2508,7 +2508,7 @@ label ending_screen:
             narrator "You never see Thut again. But sometimes, when you're near water, you feel watched. Not with malice. With something like peace."
         else:
             narrator "He vanished before the return journey reached the plain. His tracks ended at the riverbank."
-            narrator "Carmelita said he told her he was done with the outside. She did not explain what she meant."
+            narrator "He left the village behind. Whatever held him there is gone now."
             narrator "Years later, a trader from the deep swamp brings word: a lean man lives alone on an island far upriver. He speaks to no one."
             narrator "The trader says the man watches the reeds. Always the reeds. As if waiting for something to come out of them."
             narrator "Nothing ever does."
