@@ -24,3 +24,13 @@
 /dialogue.tab
 /dialogue.txt
 /strings.json
+
+# Private project notes / internal authoring files
+/AGENTS.md
+/ARCHITECTURE.md
+/CODE_STYLE.md
+/TODO.md
+/auditstory.md
+/kimiaddstory.md
+/source/
+/thoughts/ledgers/
